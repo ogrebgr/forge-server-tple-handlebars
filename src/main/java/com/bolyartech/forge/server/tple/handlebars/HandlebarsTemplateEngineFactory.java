@@ -11,6 +11,7 @@ import com.github.jknack.handlebars.io.TemplateSource;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 
@@ -23,9 +24,13 @@ public class HandlebarsTemplateEngineFactory implements TemplateEngineFactory {
     }
 
 
-    public HandlebarsTemplateEngineFactory(String mTemplatePathPrefix) {
+    public HandlebarsTemplateEngineFactory(String templatePathPrefix) {
+        if (!templatePathPrefix.startsWith(File.separator)) {
+            templatePathPrefix = File.separator + templatePathPrefix;
+        }
+
         TemplateLoader templateLoader = new ClassPathTemplateLoader();
-        templateLoader.setPrefix(mTemplatePathPrefix);
+        templateLoader.setPrefix(templatePathPrefix);
         templateLoader.setSuffix(null);
 
         Handlebars handlebarsTmp = new Handlebars(templateLoader);
